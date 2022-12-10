@@ -8,7 +8,8 @@
 
 * This section could contain a short paragraph which include the following:
   * **Definition of the tasks / challenge**  Ex: The task, as defined by the Kaggle challenge is to use a time series of 12 features, sampled daily for 1 month, to predict the next day's price of a stock.
-  * **Your approach** Ex: The approach in this repository formulates the problem as regression task, using deep recurrent neural networks as the model with the full time series of features as input. We compared the performance of 3 different network architectures.
+  * **Drone Delivery challenge**  The task, as defined by the Kaggle challenge, is to develop code that will read a variable input file of system setup parameters and customer orders, and subsequently generate a submission file detailing each action that will be performed. The submission file will subsequently be scored by Kaggle based on how rapidly each order was delivered.   
+  * **Solution method** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an infinite-horizon, discounted return equation which aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, PPO and A2C.
   * **Summary of the performance achieved** Ex: Our best model was able to predict the next day stock price within 23%, 90% of the time. At the time of writing, the best performance on Kaggle of this metric is 18%.
 
 ## Summary of Workdone
@@ -19,7 +20,7 @@ Include only the sections that are relevant an appropriate.
 
 * Data:
   * Type: For example
-    * Input: CSV configuration file containing challenge metrics:
+    * Input: CSV configuration file containing challenge metrics (all data are integers):
 > * Size of delivery area
 > * Number of drones
 > * Number of warehouses
@@ -33,7 +34,7 @@ items.
 
 #### Preprocessing / Clean up
 
-* Describe any manipulations you performed to the data.
+* No cleaning of the data was necessary for the training data set. All values were positive (or zero) integers. All orders were for corresponding valid product numbers. 
 
 #### Data Visualization
 
