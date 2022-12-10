@@ -16,19 +16,24 @@ Include only the sections that are relevant an appropriate.
 
 ### Data
 
-* Data:
-  * Type: For example
-    * Input: CSV configuration file containing challenge metrics (all data are integers):
-> * Size of delivery area
-> * Number of drones
-> * Number of warehouses
-> * Number of product types and weight for each type
-> * Inventory of each warehouse
-> * Order list detailing customer location, product numbers and quantities
+* Input:
+
+   * Configuration file: CSV file containing challenge metrics (all data are integers):
+     * Size of delivery area
+     * Number of drones
+     * Number of warehouses
+     * Number of product types and weight for each type
+     * Inventory of each warehouse
+     * Order list detailing customer location, product numbers and quantities
  
-  * Size: Training set consists of 30 drones, 10 warehouses, 400 product types, 1250 orders for 9396 total 
+   * Size: Training set consists of 30 drones, 10 warehouses, 400 product types, 1250 orders for 9396 total 
 items.
-  * This Kaggle challenge requires a code (notebook) submission which will process the test data set for subsequent scoring. 
+* Code submission: 
+   * This Kaggle challenge requires a code (notebook) submission which will process the test data set for subsequent scoring.
+* Output:
+   * Submission file requires a specific format for each action in a space-separated ASCII file, one action per line.
+
+   
 
 #### Preprocessing / Clean up
 
