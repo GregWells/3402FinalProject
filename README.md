@@ -2,11 +2,10 @@
 
 # Drone Delivery 
 
-* **This repository holds an attempt to apply model-free Reinforcement Learning techniques to optimize product delivery times as detailed in the "Drone Delivery" Kaggle challenge (https://www.kaggle.com/competitions/hashcode-drone-delivery/overview). **
+* This repository holds an attempt to apply model-free Reinforcement Learning techniques to optimize product delivery times as detailed in the "Drone Delivery" Kaggle challenge (https://www.kaggle.com/competitions/hashcode-drone-delivery/overview). 
 
 ## Overview
 
-* This section could contain a short paragraph which include the following:
   * **Definition of the tasks / challenge**  Ex: The task, as defined by the Kaggle challenge is to use a time series of 12 features, sampled daily for 1 month, to predict the next day's price of a stock.
   * **Drone Delivery challenge**  The task, as defined by the Kaggle challenge, is to develop code that will read a variable input file of system setup parameters and customer orders, and subsequently generate a submission file detailing each action that will be performed. The submission file will subsequently be scored by Kaggle based on how rapidly each order was delivered.   
   * **Solution method** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an infinite-horizon, discounted return equation which aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, PPO and A2C.
