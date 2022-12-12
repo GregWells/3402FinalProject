@@ -42,6 +42,11 @@ items.
 #### Data Visualization
 
 Show a few visualization of the data and say a few words about what you see.
+*Orders and warehouse locations 
+
+*Frequency of the order being fulfilled by the closest warehouse
+*product weight histogram
+
 
 ### Problem Formulation
 
@@ -121,11 +126,12 @@ Show a few visualization of the data and say a few words about what you see.
 
 ## Citations
 
-* Provide any references.
 
+> OpenAI Gym documentation: https://www.gymlibrary.dev/
 
+> Stable Baselines 3 documentation: https://stable-baselines3.readthedocs.io/en/master/
 
+> Nicholas Renotte YouTube channel: https://www.youtube.com/watch?v=Mut_u40Sqz4&t=4949s
 
-
-
+> 'sentdex' YouTube channel: https://www.youtube.com/watch?v=yvwxbkKX9dc
 
