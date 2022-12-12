@@ -11,7 +11,7 @@
   ![](infiniteHorizonDiscountedReturn2.PNG)
 <br />  
 The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
-  which aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
+This scenario aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
   
   * **Summary of the performance achieved:** Ex: Our best model was able to predict the next day stock price within 23%, 90% of the time. At the time of writing, the best performance on Kaggle of this metric is 18%.
 
@@ -48,6 +48,8 @@ items.
 
 Show a few visualization of the data and say a few words about what you see.
 *Orders and warehouse locations 
+  ![](warehouseVsOrderLocations.PNG)
+
 *Frequency of the order being available in the closest warehouse
 *product weight histogram
 
