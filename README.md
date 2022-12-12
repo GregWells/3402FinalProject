@@ -7,12 +7,15 @@
 ## Overview
 
   * **Drone Delivery challenge:**  The task, as defined by the Kaggle challenge, is to develop code that will read a variable input file of system setup parameters and customer orders, and subsequently generate a submission file detailing each action that will be performed. The submission file will subsequently be scored by Kaggle based on how rapidly each order was delivered.   
-  * **Solution method:** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an infinite-horizon, discounted return equation which aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, PPO and A2C.
+  * **Solution method:** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an infinite-horizon, discounted return equation:
+  ![](UTA-DataScience-Logo.png)
+  which aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
+  
   * **Summary of the performance achieved:** Ex: Our best model was able to predict the next day stock price within 23%, 90% of the time. At the time of writing, the best performance on Kaggle of this metric is 18%.
 
 ## Summary of Workdone
 
-Include only the sections that are relevant an appropriate.
+Include only the sections that are relevant and appropriate.
 
 ### Data
 
@@ -43,17 +46,27 @@ items.
 
 Show a few visualization of the data and say a few words about what you see.
 *Orders and warehouse locations 
-
-*Frequency of the order being fulfilled by the closest warehouse
+*Frequency of the order being available in the closest warehouse
 *product weight histogram
 
 
 ### Problem Formulation
 
 * Define:
-  * Input / Output
+  * Input:  / Output
+○ number of rows in the area of the simulation (1 ≤ n ≤ 10,000)
+○ number of columns in the area of the simulation  (1 ≤ n ≤ 10,000)
+○ number of drones available (1 ≤ D ≤ 1,000)
+○ deadline of the simulation 1 (1 ≤ deadline ≤ 1,000,000)
+○ maximum load of a drone (1 ≤ max load ≤ 10,000)
+
+  * Output:
+○ Line 0: Number of output lines in the file following this one
+○ Line 1-n: Space-separated action lines e.g. '0 L 3 4 5'
+
   * Models
-    * Describe the different models you tried and why.
+    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multidiscrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options to within the OpenAI derived family of:
+     ![](RL_Algos.jpg)
   * Loss, Optimizer, other Hyperparameters.
 
 ### Training
@@ -135,3 +148,4 @@ Show a few visualization of the data and say a few words about what you see.
 
 > 'sentdex' YouTube channel: https://www.youtube.com/watch?v=yvwxbkKX9dc
 
+> https://medium.com/intro-to-artificial-intelligence/key-concepts-in-reinforcement-learning-2af715dfbfa
