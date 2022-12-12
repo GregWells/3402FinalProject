@@ -46,13 +46,18 @@ items.
 
 #### Data Visualization
 
-Show a few visualization of the data and say a few words about what you see.
+While the training data set may by visualized in a number of different ways, the test data may not resemble of this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. 
+
 *Orders and warehouse locations 
-  ![](warehouseVsOrderLocations.PNG)
+![](warehouseVsOrderLocations.PNG) 
 
-*Frequency of the order being available in the closest warehouse
-*product weight histogram
+Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. 
+![](proximity.PNG) 
 
+
+Frequency of the order being available in the closest warehouse
+
+![](ProductWeightDistribution.PNG)
 
 ### Problem Formulation
 
