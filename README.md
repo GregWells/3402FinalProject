@@ -46,53 +46,71 @@ items.
 
 #### Data Visualization
 
-While the training data set may by visualized in a number of different ways, the test data may not resemble of this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. 
+While the training data set may by visualized in a number of different ways, the test data may not resemble of this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. <br>
 
-*Orders and warehouse locations 
+
 ![](warehouseVsOrderLocations.PNG) 
 
-Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. 
+Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. <br>
 ![](proximity.PNG) 
 
 
-Frequency of the order being available in the closest warehouse
-
 ![](ProductWeightDistribution.PNG)
+The maximum drone load for the training data is 200. 
+
 
 ### Problem Formulation
 
 * Define:
   * Input:  / Output
-○ number of rows in the area of the simulation (1 ≤ n ≤ 10,000)
-○ number of columns in the area of the simulation  (1 ≤ n ≤ 10,000)
-○ number of drones available (1 ≤ D ≤ 1,000)
-○ number of warehouses  (1 ≤ W ≤ 10,000)
-○ number of products available (1 ≤ P ≤ 10,000)
-○ number of customer orders  (1 ≤ C ≤ 10,000)
-○ deadline of the simulation 1 (1 ≤ deadline ≤ 1,000,000)
-○ maximum load of a drone (1 ≤ max load ≤ 10,000)
+* number of rows in the area of the simulation (1 ≤ n ≤ 10,000)
+* number of columns in the area of the simulation  (1 ≤ n ≤ 10,000)
+* number of drones available (1 ≤ D ≤ 1,000)
+* number of warehouses  (1 ≤ W ≤ 10,000)
+* number of products available (1 ≤ P ≤ 10,000)
+* number of customer orders  (1 ≤ C ≤ 10,000)
+* deadline of the simulation 1 (1 ≤ deadline ≤ 1,000,000)
+* maximum load of a drone (1 ≤ max load ≤ 10,000)
 
   * Output:
-○ Line 0: Number of output lines in the output file following this quantity
-○ Lines 1-n: Space-separated action lines e.g. '0 L 3 4 5', one set per line
+* Line 0: Number of output lines in the output file following this quantity
+* Lines 1-n: Space-separated action lines e.g. '0 L 3 4 5', one set per line
 
   * Models
-    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multidiscrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options to within the OpenAI derived family of:
-     ![](RL_Algos.jpg)
+    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options to within the OpenAI derived family of:<br>
   * Loss, Optimizer, other Hyperparameters.
+  
 
 ### Training
 
 * Describe the training:
   * How you trained: software and hardware.
+* Software environment
+* Windows 10
+* pyTorch version 1.13.0
+* Stable Baselines 3
+* Algorithms: PPO & TRPO
+
+* Hardware:
+   * CPU: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz 
+   * GPU: NVIDIA GeForce RTX 2080Ti  (Note: The frames-per-second were decreased by utilizing the GPU. It was disabled for training runs) 
+
   * How did training take.
+  
   * Training curves (loss vs epoch for test/train).
+  ![](Tensorboard_PPOvsTRPO.PNG) 
   * How did you decide to stop training.
+  Training was terminated when the mean score per episode flatlined for a significant period or trended negatively. 
   * Any difficulties? How did you resolve them?
+  I had numerous difficulties during training. My initial goal was to attempt to coax intermodal transfers (warehouse-to-warehouse) to occur as in my non-ML-coded solutions, the score could be increased significantly by dedicating 30% of the drones to solely perform intermodal transfers.  Providing a positive reward for delivering an out-of-stock item to a warehouse, led to the AI finding this scoring opportunity and maximizing it by delivering a single out of stock item to a warehouse, then immediately reloading that product onto the drone and delivering it again, wash, rinse, repeat...
+  There were numerous "learning opportunities" like this and it required many iterations to configure a proper reward system to elicit the desired behavior. 
 
 ### Performance Comparison
 
-* Clearly define the key performance metric(s).
+* Key performance metrics:
+    * Mean length of an episode - If an episode duration is configured to be of significant length to reach the final objective, when the AI reaches begins to reach the objective before the timer expires, this can be identified by the mean episode length decreasing.
+    * Mean reward - If the reward configurations are tuned properly, the reward should dramatically increase as the actions transition from purely random toward focused.
+    
 * Show/compare results in one table.
 * Show one (or few) visualization(s) of results, for example ROC curves.
 
