@@ -52,14 +52,17 @@ While the training data set may by visualized in a number of different ways, the
 
 
 ![](images/warehouseVsOrderLocations.PNG) 
+<br\>
 
 Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. <br>
 ![](images/proximity.PNG) 
 
+<br\>
 
 ![](images/ProductWeightDistribution.PNG)
-<br>The maximum drone load for the training data is 200. 
-
+<br>
+The maximum drone load for the training data is 200. 
+<br\>
 
 ### Problem Formulation
 
@@ -79,9 +82,11 @@ Of note in the training dataset is that just over half of the orders can be fulf
     * Lines 1-n: Space-separated action lines e.g. '0 L 3 4 5', one set per line
 
   * Models
-    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options within the OpenAI derived family:<br>
-      ![](images/RL_Algos.jpg)
-      <br\>
+    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options within the OpenAI derived family:
+<br>
+![](images/RL_Algos.jpg)
+Source: https://stable-baselines3.readthedocs.io/en/master/guide/algos.html
+<br\>
   * Loss, Optimizer, other Hyperparameters.
      
      * action parameters utilized:
