@@ -48,21 +48,22 @@ items.
 
 #### Data Visualization
 
-While the training data set may by visualized in a number of different ways, the test data may not resemble this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. <br>
+While the training data set may by visualized in a number of different ways, the test data may not resemble this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. 
 
 
-![](images/warehouseVsOrderLocations.PNG) 
-<br\>
+![Training Dataset:Warehouse and order locations](images/warehouseVsOrderLocations.PNG) 
 
-Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. <br>
-![](images/proximity.PNG) 
 
-<br\>
+Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. 
 
-![](images/ProductWeightDistribution.PNG)
-<br>
+![Training Dataset:Warehouse proximity to orders](images/proximity.PNG) 
+
+
+
+![Training Dataset:Product weight histogram](images/ProductWeightDistribution.PNG)
+
 The maximum drone load for the training data is 200. 
-<br\>
+
 
 ### Problem Formulation
 
@@ -83,10 +84,13 @@ The maximum drone load for the training data is 200.
 
   * Models
     * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options within the OpenAI derived family:
-<br>
-![](images/RL_Algos.jpg)
-Source: https://stable-baselines3.readthedocs.io/en/master/guide/algos.html
-<br\>
+
+
+![Stable Baselines3 reinforcement learning algorithms](images/RL_Algos.jpg)
+
+ [Source:](https://stable-baselines3.readthedocs.io/en/master/guide/algos.html).
+ 
+
   * Loss, Optimizer, other Hyperparameters.
      
      * action parameters utilized:
@@ -134,16 +138,15 @@ Source: https://stable-baselines3.readthedocs.io/en/master/guide/algos.html
 
   
   * Training curves (loss vs epoch for test/train).
-  ![](images/Tensorboard_PPOvsTRPO.PNG) 
-<br>
+  ![Reduced dataset training curve](images/Tensorboard_PPOvsTRPO.PNG) 
+
       * Pink is a 6 hour PPO learning session with 55 orders/1 drone/10 warehouses
       * Gray is a 6 hour CPTO learning session with 55 orders/1 drone/10 warehouses
-<br\>
-<br>      
-  ![](images/FullSimTRPO.PNG)     
+      
+  ![Full-size Simulation training curve](images/FullSimTRPO.PNG)     
     
      * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
-<br\>
+
   * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
   * Any difficulties? How did you resolve them?
   I had numerous difficulties during training. My initial goal was to attempt to coax intermodal transfers (warehouse-to-warehouse) to occur. In my non-ML-coded solutions, the score could be increased significantly by dedicating 30% of the drones to solely perform intermodal transfers.  Providing a positive reward for delivering an out-of-stock item to a warehouse, led to the AI finding this scoring opportunity and maximizing it by delivering a single out of stock item to a warehouse, then immediately reloading that product onto the drone and delivering it again:  rinse, wash, repeat...
