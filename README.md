@@ -251,7 +251,7 @@ class DroneEnv(gym.Env):
 >   check_env(env) 
 ```
 
-*  Doublecheck
+*  Doublecheck <br>
 This will help find any mismatches between the code and the action and/or observation sizes. It randomly explores the action space to make sure the action and observation spaces do not exceed the specifications from the init statement. Getting an error here should be viewed positively. This (potentially) saves the effort of crashes midway through a training session. Increase the episode count times 10 or 100 if you feel confident. 
 
 ```
@@ -269,8 +269,8 @@ This will help find any mismatches between the code and the action and/or observ
 >           rewardList.append(reward) 
 ```
 
-* Prepare to monitor training session:
-To Monitor the learning:
+* Prepare to monitor training session: <br>
+    To Monitor the learning:
 ```
 >    from a command prompt: 
 >    tensorboard --logdir={location of the training logs}  
@@ -352,36 +352,35 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
 * Describe the directory structure, if any.
 * List all relavent files and describe their role in the package.
 * An example:
-  * utils.py: various functions that are used in cleaning and visualizing data.
-  * preprocess.ipynb: Takes input data in CSV and writes out data frame after cleanup.
-  * visualization.ipynb: Creates various visualizations of the data.
-  * models.py: Contains functions that build the various models.
-  * training-model-1.ipynb: Trains the first model and saves model during training.
-  * training-model-2.ipynb: Trains the second model and saves model during training.
-  * training-model-3.ipynb: Trains the third model and saves model during training.
-  * performance.ipynb: loads multiple trained models and compares results.
-  * inference.ipynb: loads a trained model and applies it to test data to create kaggle submission.
+  * droneenv.py: This reads the "busy_day.in" file supplied by kaggle and instantates the environment.
+  * Drone_v.0xx.ipynb: Instantiates the environment, performs checks and doublechecks, then trains a model.
+  * DroneProcess_v.005.ipynb: Utilizes the trained model to produce the submission.csv file.
 
 * Note that all of these notebooks should contain enough text for someone to understand what is happening.
 
 
 ### Software Setup
-* List all of the required packages.
-* If not standard, provide or point to instruction for installing the packages.
-* Describe how to install your package.
+    * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
+    * From the Anaconda navigator primary window, open a command window and install all neccessary modules
+        * pip install numpy
+        * pip install pandas
+        * pip install matplotlib
+        * pip install gym
+        * pip install tensorboard
+        * pip install sb3_contrib
+     * Save the busy_day.in, droneenv.py, Drone_v.0xx.ipynb, and DroneProcess_v.005.ipynb to a common directory. The logs and models will be created in a subdir of this location.  
+
 
 ### Data
-
-* Point to where they can download the data.
-* Lead them through preprocessing steps, if necessary.
+    * download the busy_day.in file from the Kaggle challenge site: https://www.kaggle.com/competitions/hashcode-drone-delivery/data
 
 ### Training
 
-* Describe how to train the model
+* See section above entitled "How to reproduce results"
 
 #### Performance Evaluation
 
-* Describe how to run the performance evaluation.
+* The performance is measured by the total score of the items delivered per the Kaggle Drone Delivery challenge metrics.
 
 
 ## Citations
