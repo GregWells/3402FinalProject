@@ -10,7 +10,7 @@
   * **Solution method:** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an **infinite-horizon, discounted return** equation:<br >
   ![](images/infiniteHorizonDiscountedReturn2.PNG)
 
-This can be read as simply: The total reward = the sum of the reward for each time step times the discount factor.
+This can be read as simply: The total reward = the sum of the reward for each time step times the discount factor.<br>
 <br/>
 The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
 This scenario aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
@@ -107,18 +107,23 @@ Of note in the training dataset is that just over half of the orders can be fulf
         * Stable Baselines 3
         * Algorithms: PPO & TRPO
 
-* Hardware:
-   * CPU: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz 
-   * GPU: NVIDIA GeForce RTX 2080Ti  (Note: The frames-per-second were decreased by utilizing the GPU. Therefore, it was disabled for training runs) 
+    * Hardware:
+       * CPU: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz 
+       * GPU: NVIDIA GeForce RTX 2080Ti  (Note: The frames-per-second were decreased by utilizing the GPU. Therefore, it was disabled for training runs) 
 
   
   * Training curves (loss vs epoch for test/train).
   ![](images/Tensorboard_PPOvsTRPO.PNG) 
-  * How did you decide to stop training.
-  Training was terminated when the mean score per episode flatlined for a significant period or trended negatively. 
+      * Pink is a 6 hour PPO learning session with 55 orders/1 drone/10 warehouses
+      * Gray is a 6 hour CPTO learning session with 55 orders/1 drone/10 warehouses
+      <br>
+    ![](images/FullSimTRPO.PNG)     
+      * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
+      <br\>
+  * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
   * Any difficulties? How did you resolve them?
-  I had numerous difficulties during training. My initial goal was to attempt to coax intermodal transfers (warehouse-to-warehouse) to occur as in my non-ML-coded solutions, the score could be increased significantly by dedicating 30% of the drones to solely perform intermodal transfers.  Providing a positive reward for delivering an out-of-stock item to a warehouse, led to the AI finding this scoring opportunity and maximizing it by delivering a single out of stock item to a warehouse, then immediately reloading that product onto the drone and delivering it again, wash, rinse, repeat...
-  There were numerous "learning opportunities" like this and it required many iterations to configure a proper reward system to elicit the desired behavior. 
+  I had numerous difficulties during training. My initial goal was to attempt to coax intermodal transfers (warehouse-to-warehouse) to occur. In my non-ML-coded solutions, the score could be increased significantly by dedicating 30% of the drones to solely perform intermodal transfers.  Providing a positive reward for delivering an out-of-stock item to a warehouse, led to the AI finding this scoring opportunity and maximizing it by delivering a single out of stock item to a warehouse, then immediately reloading that product onto the drone and delivering it again:  rinse, wash, repeat...
+  There were numerous "learning opportunities" like this and it required many iterations to configure a reward system to elicit the desired delivery (scoring) behavior. 
 
 ### Performance Comparison
 
@@ -132,16 +137,16 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
 
 ### Conclusions
 
-* The ability to closely tune the model action space to the problem is a key factor. For this challenge my selection of the Stable Baselines 3 framework utilizing the multidiscrete action space was problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling saleman" optimization, limiting the possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selctions is challenging; it would be preferable to exclude the options from the action space altogether in advance - reduce the dimensionality wherever practical.
+* The ability to closely tune the model action space to the problem is a key factor. For this challenge my selection of the Stable Baselines 3 framework utilizing the multidiscrete action space was somewhat problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling saleman" optimization, limiting the domain of possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selections is challenging; it would be preferable to exclude the options from the action space altogether in advance - __reduce the dimensionality wherever practical__.
 
 ### Future Work
 
-* I remain enthused to be able to facilitate an environment and associated penalty/reward system that can elicit emergent behavior from an AI. The OpenAI gym environment can help provide a visual window into the RL training/testing process so I plan to continue with more simple action/observation challenges to continue my reinforcement learning education.
+* I remain enthused to be able to facilitate an environment and an associated penalty/reward system that can elicit emergent behavior from an AI. The OpenAI gym environment can help provide a visual window into the RL training/testing process so I plan to continue with more simplistic challenges to continue my reinforcement learning education before returning to more complex action spaces/observation spaces..
 
 * Future expansion possibilities:
     * An incremental step forward using this codeset would be to tune the reward system until both orders and intermodal transfers occur. 
-    * Alternately, a secondary AI could be introduced to solely perform intermodal transfers. 
-* Alter the action sequence to facilitate a much smaller action space. Limiting the size of the space of choices that a drone needs to select from could significantly improve performance.
+    * Alternately, a secondary AI could be introduced to solely perform intermodal transfers in cooperation with the existing agent.
+    * Alter the action sequence to facilitate a much smaller action space. Limiting the size of the space of choices that a drone needs to select from could significantly improve performance. Possibly abstracting the drone number altogether would be beneficial with the observation space simply showing "__A__ drone at __A CERTAIN LOCATION__ has __EXCESS CAPACITY: n___ and has these order opportunities for delivery."
 
 ## How to reproduce results
 
@@ -174,7 +179,7 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
           * check the directory where tensorboard was started from. New subdirectories, logs and models, should exist there now.
           * navigate to the most recent model directory
           * copy the run number (10 digit number) and the highest zipfile # into the notated locations in DroneProcess_v.xxx.ipynb
-          
+          *
 
 * In this section, provide instructions at least one of the following:
    * Reproduce your results fully, including training.
