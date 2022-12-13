@@ -88,7 +88,7 @@ The maximum drone load for the training data is 200.
 
 ![Stable Baselines3 reinforcement learning algorithms](images/RL_Algos.jpg)
 
- [Source:](https://stable-baselines3.readthedocs.io/en/master/guide/algos.html).
+ Source:[Stable Baselines 3](https://stable-baselines3.readthedocs.io/en/master/guide/algos.html).
  
 
   * Loss, Optimizer, other Hyperparameters.
@@ -145,12 +145,13 @@ The maximum drone load for the training data is 200.
       
   ![Full-size Simulation training curve](images/FullSimTRPO.PNG)     
     
-     * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
+      * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
 
   * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
-  * Any difficulties? How did you resolve them?
+
+#### Difficulties/challenges
   I had numerous difficulties during training. My initial goal was to attempt to coax intermodal transfers (warehouse-to-warehouse) to occur. In my non-ML-coded solutions, the score could be increased significantly by dedicating 30% of the drones to solely perform intermodal transfers.  Providing a positive reward for delivering an out-of-stock item to a warehouse, led to the AI finding this scoring opportunity and maximizing it by delivering a single out of stock item to a warehouse, then immediately reloading that product onto the drone and delivering it again:  rinse, wash, repeat...
-  There were numerous "learning opportunities" like this and it required many iterations to configure a reward system to elicit the desired delivery (scoring) behavior. 
+  There were numerous "learning opportunities" like this and it required many iterations to configure a reward system to elicit the desired delivery (scoring) behavior. Simplifying the action/observation space would likely lead to a more simple ruleset. 
 
 ### Performance Comparison
 
@@ -158,13 +159,14 @@ The maximum drone load for the training data is 200.
     * Mean length of an episode - If an episode duration is configured to be of significant length to reach the final objective, when the AI reaches begins to reach the objective before the timer expires, this can be identified by the mean episode length decreasing.
     * Mean reward - If the reward configurations are tuned properly, the reward should dramatically increase as the actions transition from purely random toward more focused on positive rewards.
 The performance in frames-per-second to train on the full dataset (9300 orders/30 drones/10 warehouses) is less than one-twentieth the rate of a reduced dataset of (55 orders/1 drone/10 warehouses). 
+
 ![](images/FullSimFPS.PNG)
-* Show/compare results in one table.
-* Show one (or few) visualization(s) of results, for example ROC curves.
+
+
 
 ### Conclusions
 
-* The ability to closely tune the model action space to the problem is a key factor. For this challenge my selection of the Stable Baselines 3 framework utilizing the multidiscrete action space was somewhat problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling saleman" optimization, limiting the domain of possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selections is challenging; it would be preferable to exclude the options from the action space altogether in advance - __reduce the dimensionality wherever practical__.
+* The ability to closely tune the model action space to the problem is a key factor. For this challenge my utilization of the Stable Baselines 3 framework utilizing the multidiscrete action space was somewhat problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling saleman" optimization, limiting the domain of possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selections is challenging; it would be preferable to exclude the options from the action space altogether in advance - __reduce the dimensionality wherever practical__.
 
 ### Future Work
 
@@ -198,7 +200,7 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
                     e.g. cd C:\Users\greg\Documents\GitHub\DATA3402\Exams\Final\Drone\logs
                 * tensorboard --logdir=. 
                 * then open a browser window to:http://localhost:6006/
-          * run the learning cell 
+          * run the learning cell (training)
           * after a few minutes, refresh the tensorboard browser window, the stats will show (can be slow) refresh as needed
           
           * When results have plateaued, ep_rew_mean(episode rewards mean) has climbed sharply then eventually flattened out
@@ -206,13 +208,133 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
           * check the directory where tensorboard was started from. New subdirectories, logs and models, should exist there now.
           * navigate to the most recent model directory
           * copy the run number (10 digit number) and the highest zipfile # into the notated locations in DroneProcess_v.xxx.ipynb
-          *
+          * run the DroneProcess 
+          * validate the submission.csv file was generated
 
-* In this section, provide instructions at least one of the following:
-   * Reproduce your results fully, including training.
-   * Apply this package to other data. For example, how to use the model you trained.
-   * Use this package to perform their own study.
-* Also describe what resources to use for this package, if appropirate. For example, point them to Collab and TPUs.
+#### Key coding constructs to facilitate training other multidiscrete RL tasks: 
+
+* Define the class:
+
+>class DroneEnv(gym.Env):
+>    def __init__(self):
+>        super(DroneEnv, self).__init__()
+>        #define/initialize all variables 
+>        self.action_space = gym.spaces.MultiDiscrete([{action 0 size(positive int)},{action 1 size(positive int)},....])
+>        self.observation_space =gym.spaces.MultiDiscrete([{obs 0 size(positive int)},{obs 1 size(positive int)},....])
+>
+>    def step(self, action):     #This is the repetitive loop to perform based on the action the AI "guesses"
+>        self.done=False
+>        # Your code here to determine the amount of reward for the guess....
+>        self.reward=....
+>        self.info={}   #placeholder, not currently used
+>        if the objective has been met then set self.done=True
+>        self.observation= [{variables listed here MUST match the size as specified in the init section}] 
+>        self.observation = np.array(self.observation)
+>        return self.observation, self.reward, self.done, self.info
+>
+>    def reset(self):
+>        #set all variables to initial state
+>        #return the initial state (observation) to start the episode with
+>        self.observation= [{variables listed here MUST match the size as specified in the init section}] 
+>        self.observation = np.array(self.observation)
+>        return self.observation
+
+* Check the code:
+
+>   #checkenv
+>   from stable_baselines3.common.env_checker import check_env
+>   env = DroneEnv()     #Change DroneEnv to the name of your class
+>   # This will check your environment and output warnings 
+>   check_env(env)
+
+*  Doublecheck
+This will help find any mismatches between the code and the action and/or observation sizes. It randomly explores the action space to make sure the action and observation spaces do not exceed the specifications from the init statement. Getting an error here should be viewed positively. This (potentially) saves the effort of crashes midway through a training session. Increase the episode count times 10 or 100 if you feel confident. 
+
+>   import stable_baselines3
+>   stable_baselines3.common.env_checker import check_env
+>   rewardList=list()
+>   env = DroneEnv()
+>   episodes = 5
+>   for episode in range(episodes):
+>       done = False
+>       obs = env.reset()
+>       while not done:
+>           random_action = env.action_space.sample()
+>           obs, reward, done, info = env.step(random_action)
+>           rewardList.append(reward)
+
+* Prepare to monitor training session:
+To Monitor the learning:
+>    from a command prompt:
+>    tensorboard --logdir={location of the training logs} 
+>    then open a browser window to:http://localhost:6006/   #6006 is the default port but can be changed
+    
+*  Train:
+>  import gym
+>  from stable_baselines3 import PPO
+>  from stable_baselines3.common.monitor import Monitor
+>  from stable_baselines3.common.evaluation import evaluate_policy
+>  import os
+>  #from droneenv import DroneEnv
+
+>  models_dir = f"models/{int(time.time())}/"
+>  logdir = f"logs/{int(time.time())}/"
+
+>  if not os.path.exists(models_dir):
+>      os.makedirs(models_dir)
+
+>  if not os.path.exists(logdir):
+>      os.makedirs(logdir)
+
+>  env = DroneEnv()
+>  env.reset()
+>  env = Monitor(env, logdir)
+
+>  model = PPO('MlpPolicy', env, verbose=1, tensorboard_log=logdir,device='cpu')
+>  TIMESTEPS = 10000
+>  iters = 0
+>  while True:
+>      iters += 1
+>      model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=f"PPO")
+>      model.save(f"{models_dir}/{TIMESTEPS*iters}")
+    
+
+Refresh the tensorboard to watch training progress. Once the mean reward stabilizes, stop the training process.
+
+* Run a simulation against the resultant model:
+
+>  #Load a model and query
+>  # import libraries and packages
+>  import numpy as np
+>  import gym
+>  from stable_baselines3 import PPO
+>  import os
+>  from stable_baselines3.common.monitor import Monitor
+>  from stable_baselines3.common.evaluation import evaluate_policy
+>  #from droneenv import DroneEnv
+
+>  models_dir = f"models/1670818026/"                #Enter the dir of the model to utilize
+
+>  env = SnekEnv()
+>  env.reset()
+>  env = Monitor(env, logdir)
+>  #C:\Users\greg\Documents\GitHub\DATA3402\Exams\Final\ML_snek\models\1670214614
+>  model_path = f"{models_dir}/12750000.zip"
+>  model = PPO.load(model_path, env=env)
+>  episodes = 1
+>  
+>  for ep in range(episodes):
+>      obs = env.reset()
+>      done = False
+>      i=0
+>      while not done:
+        
+>          action, _states = model.predict(obs)
+>          obs, reward, done, info = env.step(action)
+>          print("i:{} action: {}  reward:{}  obs:{} done:{}".format(i,action,reward,obs,done) )
+
+* If the results meet expectations, this is complete. Otherwise, change the step() section and retrain.
+
 
 ### Overview of files in repository
 
