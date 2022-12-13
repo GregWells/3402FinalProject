@@ -1,4 +1,4 @@
-![](UTA-DataScience-Logo.png)
+![](images/UTA-DataScience-Logo.png)
 
 # Drone Delivery 
 
@@ -8,7 +8,7 @@
 
   * **Drone Delivery challenge:**  The task, as defined by the Kaggle challenge, is to develop code that will read a variable input file of system setup parameters and customer orders, and subsequently generate a submission file detailing each action that will be performed. The submission file will subsequently be scored by Kaggle based on how rapidly each order was delivered.   
   * **Solution method:** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an **infinite-horizon, discounted return** equation:<br />
-  ![](infiniteHorizonDiscountedReturn2.PNG)
+  ![](images/infiniteHorizonDiscountedReturn2.PNG)
 <br />  
 The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
 This scenario aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
@@ -49,13 +49,13 @@ items.
 While the training data set may by visualized in a number of different ways, the test data may not resemble this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. <br>
 
 
-![](warehouseVsOrderLocations.PNG) 
+![](images/warehouseVsOrderLocations.PNG) 
 
 Of note in the training dataset is that just over half of the orders can be fulfilled by utilizing the inventory of the closest warehouse. <br>
-![](proximity.PNG) 
+![](images/proximity.PNG) 
 
 
-![](ProductWeightDistribution.PNG)
+![](images/ProductWeightDistribution.PNG)
 <br>The maximum drone load for the training data is 200. 
 
 
@@ -111,7 +111,7 @@ Of note in the training dataset is that just over half of the orders can be fulf
 
   
   * Training curves (loss vs epoch for test/train).
-  ![](Tensorboard_PPOvsTRPO.PNG) 
+  ![](images/Tensorboard_PPOvsTRPO.PNG) 
   * How did you decide to stop training.
   Training was terminated when the mean score per episode flatlined for a significant period or trended negatively. 
   * Any difficulties? How did you resolve them?
@@ -124,7 +124,7 @@ Of note in the training dataset is that just over half of the orders can be fulf
     * Mean length of an episode - If an episode duration is configured to be of significant length to reach the final objective, when the AI reaches begins to reach the objective before the timer expires, this can be identified by the mean episode length decreasing.
     * Mean reward - If the reward configurations are tuned properly, the reward should dramatically increase as the actions transition from purely random toward more focused on positive rewards.
 The performance in frames-per-second to train on the full dataset (9300 orders/30 drones/10 warehouses) is less than one-twentieth the rate of a reduced dataset of (55 orders/1 drone/10 warehouses). 
-![](FullSimFPS.PNG)
+![](images/FullSimFPS.PNG)
 * Show/compare results in one table.
 * Show one (or few) visualization(s) of results, for example ROC curves.
 
