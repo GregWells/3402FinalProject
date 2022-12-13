@@ -215,8 +215,8 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
 
 * Define the class:
 
->class DroneEnv(gym.Env):
->    def __init__(self):
+>class DroneEnv(gym.Env): <br\>
+>    def __init__(self): <br\>
 >        super(DroneEnv, self).__init__()
 >        #define/initialize all variables 
 >        self.action_space = gym.spaces.MultiDiscrete([{action 0 size(positive int)},{action 1 size(positive int)},....])
