@@ -130,14 +130,15 @@ Of note in the training dataset is that just over half of the orders can be fulf
   
   * Training curves (loss vs epoch for test/train).
   ![](images/Tensorboard_PPOvsTRPO.PNG) 
+<br>
       * Pink is a 6 hour PPO learning session with 55 orders/1 drone/10 warehouses
       * Gray is a 6 hour CPTO learning session with 55 orders/1 drone/10 warehouses
-      <br\>
-      
+<br\>
+<br>      
   ![](images/FullSimTRPO.PNG)     
     
      * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
-      <br\>
+<br\>
   * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
   * Any difficulties? How did you resolve them?
   I had numerous difficulties during training. My initial goal was to attempt to coax intermodal transfers (warehouse-to-warehouse) to occur. In my non-ML-coded solutions, the score could be increased significantly by dedicating 30% of the drones to solely perform intermodal transfers.  Providing a positive reward for delivering an out-of-stock item to a warehouse, led to the AI finding this scoring opportunity and maximizing it by delivering a single out of stock item to a warehouse, then immediately reloading that product onto the drone and delivering it again:  rinse, wash, repeat...
