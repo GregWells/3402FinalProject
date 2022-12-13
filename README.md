@@ -215,41 +215,46 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
 
 * Define the class:
 
->class DroneEnv(gym.Env): <br>
->    def __init__(self): <br>
->        super(DroneEnv, self).__init__() <br>
->        #define/initialize all variables  <br>
->        self.action_space = gym.spaces.MultiDiscrete([{action 0 size(positive int)},{action 1 size(positive int)},....]) <br>
->        self.observation_space =gym.spaces.MultiDiscrete([{obs 0 size(positive int)},{obs 1 size(positive int)},....]) <br>
-> <br>
->    def step(self, action):     #This is the repetitive loop to perform based on the action the AI "guesses" <br>
->        self.done=False <br>
->        # Your code here to determine the amount of reward for the guess.... <br>
->        self.reward=.... <br>
->        self.info={}   #placeholder, not currently used <br>
->        if the objective has been met then set self.done=True <br>
->        self.observation= [{variables listed here MUST match the size as specified in the init section}]  <br>
->        self.observation = np.array(self.observation) <br>
->        return self.observation, self.reward, self.done, self.info <br>
-> <br>
->    def reset(self): <br>
->        #set all variables to initial state <br>
->        #return the initial state (observation) to start the episode with <br>
->        self.observation= [{variables listed here MUST match the size as specified in the init section}]  <br>
->        self.observation = np.array(self.observation) <br>
->        return self.observation <br>
+```
+class DroneEnv(gym.Env): <br>
+    def __init__(self): <br>
+        super(DroneEnv, self).__init__() <br>
+        #define/initialize all variables  <br>
+        self.action_space = gym.spaces.MultiDiscrete([{action 0 size(positive int)},{action 1 size(positive int)},....]) <br>
+        self.observation_space =gym.spaces.MultiDiscrete([{obs 0 size(positive int)},{obs 1 size(positive int)},....]) <br>
+ <br>
+    def step(self, action):     #This is the repetitive loop to perform based on the action the AI "guesses" <br>
+        self.done=False <br>
+        # Your code here to determine the amount of reward for the guess.... <br>
+        self.reward=.... <br>
+        self.info={}   #placeholder, not currently used <br>
+        if the objective has been met then set self.done=True <br>
+        self.observation= [{variables listed here MUST match the size as specified in the init section}]  <br>
+        self.observation = np.array(self.observation) <br>
+        return self.observation, self.reward, self.done, self.info <br>
+ <br>
+    def reset(self): <br>
+        #set all variables to initial state <br>
+        #return the initial state (observation) to start the episode with <br>
+        self.observation= [{variables listed here MUST match the size as specified in the init section}]  <br>
+        self.observation = np.array(self.observation) <br>
+        return self.observation <br>
+```
 
 * Check the code:
 
+```
 >   #checkenv <br>
 >   from stable_baselines3.common.env_checker import check_env <br>
 >   env = DroneEnv()     #Change DroneEnv to the name of your class <br>
 >   # This will check your environment and output warnings  <br>
 >   check_env(env) <br>
+```
 
 *  Doublecheck
 This will help find any mismatches between the code and the action and/or observation sizes. It randomly explores the action space to make sure the action and observation spaces do not exceed the specifications from the init statement. Getting an error here should be viewed positively. This (potentially) saves the effort of crashes midway through a training session. Increase the episode count times 10 or 100 if you feel confident. 
 
+```
 >   import stable_baselines3 <br>
 >   stable_baselines3.common.env_checker import check_env <br>
 >   rewardList=list() <br>
@@ -262,14 +267,19 @@ This will help find any mismatches between the code and the action and/or observ
 >           random_action = env.action_space.sample() <br>
 >           obs, reward, done, info = env.step(random_action) <br>
 >           rewardList.append(reward) <br>
+```
 
 * Prepare to monitor training session:
 To Monitor the learning:
+```
 >    from a command prompt: <br>
 >    tensorboard --logdir={location of the training logs}  <br>
 >    then open a browser window to:http://localhost:6006/   #6006 is the default port but can be changed <br>
-    
+```
+
 *  Train:
+
+```
 >  import gym <br>
 >  from stable_baselines3 import PPO <br>
 >  from stable_baselines3.common.monitor import Monitor <br>
@@ -297,12 +307,13 @@ To Monitor the learning:
 >      iters += 1 <br>
 >      model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=f"PPO") <br>
 >      model.save(f"{models_dir}/{TIMESTEPS*iters}") <br>
-    
+```    
 
 Refresh the tensorboard to watch training progress. Once the mean reward stabilizes, stop the training process.
 
 * Run a simulation against the resultant model:
 
+```
 >  #Load a model and query <br>
 >  # import libraries and packages <br>
 >  import numpy as np <br>
@@ -331,6 +342,7 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
 >          action, _states = model.predict(obs) <br>
 >          obs, reward, done, info = env.step(action) <br>
 >          print("i:{} action: {}  reward:{}  obs:{} done:{}".format(i,action,reward,obs,done) ) <br>
+```
 
 * If the results meet expectations, this is complete. Otherwise, change the step() section and retrain.
 
