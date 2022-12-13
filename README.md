@@ -217,121 +217,120 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
 
 >class DroneEnv(gym.Env): <br>
 >    def __init__(self): <br>
->        super(DroneEnv, self).__init__()
->        #define/initialize all variables 
->        self.action_space = gym.spaces.MultiDiscrete([{action 0 size(positive int)},{action 1 size(positive int)},....])
->        self.observation_space =gym.spaces.MultiDiscrete([{obs 0 size(positive int)},{obs 1 size(positive int)},....])
->
->    def step(self, action):     #This is the repetitive loop to perform based on the action the AI "guesses"
->        self.done=False
->        # Your code here to determine the amount of reward for the guess....
->        self.reward=....
->        self.info={}   #placeholder, not currently used
->        if the objective has been met then set self.done=True
->        self.observation= [{variables listed here MUST match the size as specified in the init section}] 
->        self.observation = np.array(self.observation)
->        return self.observation, self.reward, self.done, self.info
->
->    def reset(self):
->        #set all variables to initial state
->        #return the initial state (observation) to start the episode with
->        self.observation= [{variables listed here MUST match the size as specified in the init section}] 
->        self.observation = np.array(self.observation)
->        return self.observation
+>        super(DroneEnv, self).__init__() <br>
+>        #define/initialize all variables  <br>
+>        self.action_space = gym.spaces.MultiDiscrete([{action 0 size(positive int)},{action 1 size(positive int)},....]) <br>
+>        self.observation_space =gym.spaces.MultiDiscrete([{obs 0 size(positive int)},{obs 1 size(positive int)},....]) <br>
+> <br>
+>    def step(self, action):     #This is the repetitive loop to perform based on the action the AI "guesses" <br>
+>        self.done=False <br>
+>        # Your code here to determine the amount of reward for the guess.... <br>
+>        self.reward=.... <br>
+>        self.info={}   #placeholder, not currently used <br>
+>        if the objective has been met then set self.done=True <br>
+>        self.observation= [{variables listed here MUST match the size as specified in the init section}]  <br>
+>        self.observation = np.array(self.observation) <br>
+>        return self.observation, self.reward, self.done, self.info <br>
+> <br>
+>    def reset(self): <br>
+>        #set all variables to initial state <br>
+>        #return the initial state (observation) to start the episode with <br>
+>        self.observation= [{variables listed here MUST match the size as specified in the init section}]  <br>
+>        self.observation = np.array(self.observation) <br>
+>        return self.observation <br>
 
 * Check the code:
 
->   #checkenv
->   from stable_baselines3.common.env_checker import check_env
->   env = DroneEnv()     #Change DroneEnv to the name of your class
->   # This will check your environment and output warnings 
->   check_env(env)
+>   #checkenv <br>
+>   from stable_baselines3.common.env_checker import check_env <br>
+>   env = DroneEnv()     #Change DroneEnv to the name of your class <br>
+>   # This will check your environment and output warnings  <br>
+>   check_env(env) <br>
 
 *  Doublecheck
 This will help find any mismatches between the code and the action and/or observation sizes. It randomly explores the action space to make sure the action and observation spaces do not exceed the specifications from the init statement. Getting an error here should be viewed positively. This (potentially) saves the effort of crashes midway through a training session. Increase the episode count times 10 or 100 if you feel confident. 
 
->   import stable_baselines3
->   stable_baselines3.common.env_checker import check_env
->   rewardList=list()
->   env = DroneEnv()
->   episodes = 5
->   for episode in range(episodes):
->       done = False
->       obs = env.reset()
->       while not done:
->           random_action = env.action_space.sample()
->           obs, reward, done, info = env.step(random_action)
->           rewardList.append(reward)
+>   import stable_baselines3 <br>
+>   stable_baselines3.common.env_checker import check_env <br>
+>   rewardList=list() <br>
+>   env = DroneEnv() <br>
+>   episodes = 5 <br>
+>   for episode in range(episodes): <br>
+>       done = False <br>
+>       obs = env.reset() <br>
+>       while not done: <br>
+>           random_action = env.action_space.sample() <br>
+>           obs, reward, done, info = env.step(random_action) <br>
+>           rewardList.append(reward) <br>
 
 * Prepare to monitor training session:
 To Monitor the learning:
->    from a command prompt:
->    tensorboard --logdir={location of the training logs} 
->    then open a browser window to:http://localhost:6006/   #6006 is the default port but can be changed
+>    from a command prompt: <br>
+>    tensorboard --logdir={location of the training logs}  <br>
+>    then open a browser window to:http://localhost:6006/   #6006 is the default port but can be changed <br>
     
 *  Train:
->  import gym
->  from stable_baselines3 import PPO
->  from stable_baselines3.common.monitor import Monitor
->  from stable_baselines3.common.evaluation import evaluate_policy
->  import os
->  #from droneenv import DroneEnv
+>  import gym <br>
+>  from stable_baselines3 import PPO <br>
+>  from stable_baselines3.common.monitor import Monitor <br>
+>  from stable_baselines3.common.evaluation import evaluate_policy <br>
+>  import os <br>
+>  #from droneenv import DroneEnv <br>
 
->  models_dir = f"models/{int(time.time())}/"
->  logdir = f"logs/{int(time.time())}/"
+>  models_dir = f"models/{int(time.time())}/" <br>
+>  logdir = f"logs/{int(time.time())}/" <br>
 
->  if not os.path.exists(models_dir):
->      os.makedirs(models_dir)
+>  if not os.path.exists(models_dir): <br>
+>      os.makedirs(models_dir) <br>
 
->  if not os.path.exists(logdir):
->      os.makedirs(logdir)
+>  if not os.path.exists(logdir): <br>
+>      os.makedirs(logdir) <br>
 
->  env = DroneEnv()
->  env.reset()
->  env = Monitor(env, logdir)
+>  env = DroneEnv() <br>
+>  env.reset() <br>
+>  env = Monitor(env, logdir) <br>
 
->  model = PPO('MlpPolicy', env, verbose=1, tensorboard_log=logdir,device='cpu')
->  TIMESTEPS = 10000
->  iters = 0
->  while True:
->      iters += 1
->      model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=f"PPO")
->      model.save(f"{models_dir}/{TIMESTEPS*iters}")
+>  model = PPO('MlpPolicy', env, verbose=1, tensorboard_log=logdir,device='cpu') <br>
+>  TIMESTEPS = 10000 <br>
+>  iters = 0 <br>
+>  while True: <br>
+>      iters += 1 <br>
+>      model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name=f"PPO") <br>
+>      model.save(f"{models_dir}/{TIMESTEPS*iters}") <br>
     
 
 Refresh the tensorboard to watch training progress. Once the mean reward stabilizes, stop the training process.
 
 * Run a simulation against the resultant model:
 
->  #Load a model and query
->  # import libraries and packages
->  import numpy as np
->  import gym
->  from stable_baselines3 import PPO
->  import os
->  from stable_baselines3.common.monitor import Monitor
->  from stable_baselines3.common.evaluation import evaluate_policy
->  #from droneenv import DroneEnv
+>  #Load a model and query <br>
+>  # import libraries and packages <br>
+>  import numpy as np <br>
+>  import gym <br>
+>  from stable_baselines3 import PPO <br>
+>  import os <br>
+>  from stable_baselines3.common.monitor import Monitor <br>
+>  from stable_baselines3.common.evaluation import evaluate_policy <br>
+>  #from droneenv import DroneEnv <br>
 
->  models_dir = f"models/1670818026/"                #Enter the dir of the model to utilize
+>  models_dir = f"models/1670818026/"                #Enter the dir of the model to utilize <br>
 
->  env = SnekEnv()
->  env.reset()
->  env = Monitor(env, logdir)
->  #C:\Users\greg\Documents\GitHub\DATA3402\Exams\Final\ML_snek\models\1670214614
->  model_path = f"{models_dir}/12750000.zip"
->  model = PPO.load(model_path, env=env)
->  episodes = 1
->  
->  for ep in range(episodes):
->      obs = env.reset()
->      done = False
->      i=0
->      while not done:
+>  env = DroneEnv() <br>
+>  env.reset() <br>
+>  env = Monitor(env, logdir) <br>
+>  model_path = f"{models_dir}/12750000.zip"    #Enter the model file to utilize <br>
+>  model = PPO.load(model_path, env=env) <br>
+>  episodes = 1 <br>
+>   <br>
+>  for ep in range(episodes): <br>
+>      obs = env.reset() <br>
+>      done = False <br>
+>      i=0 <br>
+>      while not done: <br>
         
->          action, _states = model.predict(obs)
->          obs, reward, done, info = env.step(action)
->          print("i:{} action: {}  reward:{}  obs:{} done:{}".format(i,action,reward,obs,done) )
+>          action, _states = model.predict(obs) <br>
+>          obs, reward, done, info = env.step(action) <br>
+>          print("i:{} action: {}  reward:{}  obs:{} done:{}".format(i,action,reward,obs,done) ) <br>
 
 * If the results meet expectations, this is complete. Otherwise, change the step() section and retrain.
 
