@@ -132,11 +132,11 @@ Of note in the training dataset is that just over half of the orders can be fulf
   ![](images/Tensorboard_PPOvsTRPO.PNG) 
       * Pink is a 6 hour PPO learning session with 55 orders/1 drone/10 warehouses
       * Gray is a 6 hour CPTO learning session with 55 orders/1 drone/10 warehouses
-      <br>
+      <br\>
       
   ![](images/FullSimTRPO.PNG)     
     
-      * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
+     * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
       <br\>
   * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
   * Any difficulties? How did you resolve them?
