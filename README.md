@@ -46,7 +46,7 @@ items.
 
 #### Data Visualization
 
-While the training data set may by visualized in a number of different ways, the test data may not resemble of this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. <br>
+While the training data set may by visualized in a number of different ways, the test data may not resemble this dataset at all. Designing a solution based on the training data distribution may lead to extreme overfitting. <br>
 
 
 ![](warehouseVsOrderLocations.PNG) 
@@ -56,46 +56,59 @@ Of note in the training dataset is that just over half of the orders can be fulf
 
 
 ![](ProductWeightDistribution.PNG)
-The maximum drone load for the training data is 200. 
+<br>The maximum drone load for the training data is 200. 
 
 
 ### Problem Formulation
 
-* Define:
-  * Input:  / Output
-* number of rows in the area of the simulation (1 ≤ n ≤ 10,000)
-* number of columns in the area of the simulation  (1 ≤ n ≤ 10,000)
-* number of drones available (1 ≤ D ≤ 1,000)
-* number of warehouses  (1 ≤ W ≤ 10,000)
-* number of products available (1 ≤ P ≤ 10,000)
-* number of customer orders  (1 ≤ C ≤ 10,000)
-* deadline of the simulation 1 (1 ≤ deadline ≤ 1,000,000)
-* maximum load of a drone (1 ≤ max load ≤ 10,000)
+* As defined in the Kaggle challenge specification, the configuration parameters fall in the following ranges:
+    * number of rows in the area of the simulation (1 ≤ n ≤ 10,000)
+    * number of columns in the area of the simulation  (1 ≤ n ≤ 10,000)
+    * number of drones available (1 ≤ D ≤ 1,000)
+    * number of warehouses  (1 ≤ W ≤ 10,000)
+    * number of products available (1 ≤ P ≤ 10,000)
+    * number of customer orders  (1 ≤ C ≤ 10,000)
+    * deadline of the simulation 1 (1 ≤ deadline ≤ 1,000,000)
+    * maximum load of a drone (1 ≤ max load ≤ 10,000)
 
-  * Output:
-* Line 0: Number of output lines in the output file following this quantity
-* Lines 1-n: Space-separated action lines e.g. '0 L 3 4 5', one set per line
+  * Required output file configuration (filename: submission.csv):
+    * Line 0: Number of output lines in the output file following this quantity
+    * Lines 1-n: Space-separated action lines e.g. '0 L 3 4 5', one set per line
 
   * Models
     * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options to within the OpenAI derived family of:<br>
   * Loss, Optimizer, other Hyperparameters.
-  
+     
+     * action parameters utilized:
+         * Drone number
+         * Load/Unload/Deliver 
+         * Location (all locations were transformed from row, col to an unique integer value) 
+         * Order number
+     * observation parameters
+         * sequence number: the AI needs information on how the timing affects choices
+         * number of filled orders: also a timing input
+         * drone location: drone location after the most recent action
+         * drone payload: drone payload weight after the most recent action
+         * previous action: (Load/Unload/Deliver)
+         * most recent action: (Load/Unload/Deliver) This is probably unneccessary 
+
+
 
 ### Training
 
-* Describe the training:
-  * How you trained: software and hardware.
-* Software environment
-* Windows 10
-* pyTorch version 1.13.0
-* Stable Baselines 3
-* Algorithms: PPO & TRPO
+* Training sesison were typically several hours long even on a severely scaled back dataset of 55 orders.  
+    * Software environment
+        * Windows 10
+        * Anaconda Navigator 2.3.2 
+        * pyTorch version 1.13.0
+        * gym 0.21.0
+        * Stable Baselines 3
+        * Algorithms: PPO & TRPO
 
 * Hardware:
    * CPU: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz 
    * GPU: NVIDIA GeForce RTX 2080Ti  (Note: The frames-per-second were decreased by utilizing the GPU. It was disabled for training runs) 
 
-  * How did training take.
   
   * Training curves (loss vs epoch for test/train).
   ![](Tensorboard_PPOvsTRPO.PNG) 
@@ -109,21 +122,57 @@ The maximum drone load for the training data is 200.
 
 * Key performance metrics:
     * Mean length of an episode - If an episode duration is configured to be of significant length to reach the final objective, when the AI reaches begins to reach the objective before the timer expires, this can be identified by the mean episode length decreasing.
-    * Mean reward - If the reward configurations are tuned properly, the reward should dramatically increase as the actions transition from purely random toward focused.
-    
+    * Mean reward - If the reward configurations are tuned properly, the reward should dramatically increase as the actions transition from purely random toward more focused on positive rewards.
+The performance in frames-per-second to train on the full dataset (9300 orders/30 drones/10 warehouses) is less than one-twentieth the rate of a reduced dataset of (55 orders/1 drone/10 warehouses). 
+![](FullSimFPS.PNG)
 * Show/compare results in one table.
 * Show one (or few) visualization(s) of results, for example ROC curves.
 
 ### Conclusions
 
-* State any conclusions you can infer from your work. Example: LSTM work better than GRU.
+* The ability to closely tune the model action space to the problem is a key factor. For this challenge my selection of the Stable Baselines 3 framework utilizing the multidiscrete action space was problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling saleman" optimization, limiting the possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selctions is challenging; it would be preferable to exclude the options from the action space altogether in advance - reduce the dimensionality wherever practical.
 
 ### Future Work
 
-* What would be the next thing that you would try.
-* What are some other studies that can be done starting from here.
+* I remain enthused to be able to facilitate an environment and associated penalty/reward system that can elicit emergent behavior from an AI. The OpenAI gym environment can help provide a visual window into the RL training/testing process so I plan to continue with more simple action/observation challenges to continue my reinforcement learning education.
+
+* Future expansion possibilities:
+    * An incremental step forward using this codeset would be to tune the reward system until both orders and intermodal transfers occur. 
+    * Alternately, a secondary AI could be introduced to solely perform intermodal transfers. 
+* Alter the action sequence to facilitate a much smaller action space. Limiting the size of the space of choices that a drone needs to select from could significantly improve performance.
 
 ## How to reproduce results
+
+* To reproduce these results on a local PC:
+    * download the busy_day.in file from the Kaggle challenge site: https://www.kaggle.com/competitions/hashcode-drone-delivery/data
+    * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
+    * From the Anaconda navigator primary window, open a command window and install all neccessary modules
+        * pip install numpy
+        * pip install pandas
+        * pip install matplotlib
+        * pip install gym
+        * pip install tensorboard
+        * pip install sb3_contrib
+        
+     * From the Anaconda navigator primary window, open jupyter notebook
+         * open the Drone_vXXX.ipynb
+         * run each cell in succession
+         * before executing the drone learn section (after is OK too):
+             * To Monitor the learning:
+                * from an Anaconda command window:
+                * change dirctory to the directory the ipynb notebook was located in. 
+                    e.g. cd C:\Users\greg\Documents\GitHub\DATA3402\Exams\Final\Drone\logs
+                * tensorboard --logdir=. 
+                * then open a browser window to:http://localhost:6006/
+          * run the learning cell 
+          * after a few minutes, refresh the tensorboard browser window, the stats will show (can be slow) refresh as needed
+          
+          * When results have plateaued, ep_rew_mean(episode rewards mean) has climbed sharply then eventually flattened out
+          * stop the cell from running 
+          * check the directory where tensorboard was started from. New subdirectories, logs and models, should exist there now.
+          * navigate to the most recent model directory
+          * copy the run number (10 digit number) and the highest zipfile # into the notated locations in DroneProcess_v.xxx.ipynb
+          
 
 * In this section, provide instructions at least one of the following:
    * Reproduce your results fully, including training.
@@ -147,6 +196,7 @@ The maximum drone load for the training data is 200.
   * inference.ipynb: loads a trained model and applies it to test data to create kaggle submission.
 
 * Note that all of these notebooks should contain enough text for someone to understand what is happening.
+
 
 ### Software Setup
 * List all of the required packages.
