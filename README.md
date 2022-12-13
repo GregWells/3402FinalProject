@@ -7,7 +7,7 @@
 ## Overview
 
   * **Drone Delivery challenge:**  The task, as defined by the Kaggle challenge, is to develop code that will read a variable input file of system setup parameters and customer orders, and subsequently generate a submission file detailing each action that will be performed. The submission file will subsequently be scored by Kaggle based on how rapidly each order was delivered.   
-  * **Solution method:** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an infinite-horizon, discounted return equation:<br />
+  * **Solution method:** The approach in this repository leverages reinforcement learning (RL) to determine an efficient path to complete the orders. The problem was identified as fitting an **infinite-horizon, discounted return** equation:<br />
   ![](infiniteHorizonDiscountedReturn2.PNG)
 <br />  
 The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
@@ -107,7 +107,7 @@ Of note in the training dataset is that just over half of the orders can be fulf
 
 * Hardware:
    * CPU: Intel(R) Core(TM) i9-9900K CPU @ 3.60GHz 
-   * GPU: NVIDIA GeForce RTX 2080Ti  (Note: The frames-per-second were decreased by utilizing the GPU. It was disabled for training runs) 
+   * GPU: NVIDIA GeForce RTX 2080Ti  (Note: The frames-per-second were decreased by utilizing the GPU. Therefore, it was disabled for training runs) 
 
   
   * Training curves (loss vs epoch for test/train).
