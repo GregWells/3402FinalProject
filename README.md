@@ -355,8 +355,7 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
   * droneenv.py: This reads the "busy_day.in" file supplied by kaggle and instantates the environment.
   * Drone_v.0xx.ipynb: Instantiates the environment, performs checks and doublechecks, then trains a model.
   * DroneProcess_v.005.ipynb: Utilizes the trained model to produce the submission.csv file.
-
-* Note that all of these notebooks should contain enough text for someone to understand what is happening.
+  * DroneML_Notes_v002.ipynb: Notes taken during project (not needed to reproduce results)
 
 
 ### Software Setup
