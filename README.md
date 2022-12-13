@@ -79,7 +79,9 @@ Of note in the training dataset is that just over half of the orders can be fulf
     * Lines 1-n: Space-separated action lines e.g. '0 L 3 4 5', one set per line
 
   * Models
-    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options to within the OpenAI derived family of:<br>
+    * The structure of the challenge lends itself to a reinforcement learning approach and within that domain, a multi-discrete action and observation space as each decision (drone, warehouse, product, order) is discrete not continuous. This limits the available options within the OpenAI derived family:<br>
+      ![](images/RL_Algos.jpg)
+      <br\>
   * Loss, Optimizer, other Hyperparameters.
      
      * action parameters utilized:
@@ -94,8 +96,21 @@ Of note in the training dataset is that just over half of the orders can be fulf
          * drone payload: drone payload weight after the most recent action
          * previous action: (Load/Unload/Deliver)
          * most recent action: (Load/Unload/Deliver) This is probably unneccessary 
-
-
+     * penalties(negative rewards) utilized:
+         * Attempt to load/unload at a location other than a warehouse
+         * Attempt to deliver a product for an order that has already been completed
+         * Attempt to deliver a product for an order that is already "in flight"
+         * Attempt to deliver a product that is not onboard the specified drone
+         * Attempt to unload a product at the same warehouse that it originated
+         * Attempt to load a product that is not in stock 
+         * Attempt to load a drone beyond its capacity
+     * rewards utilized:
+         * Deliver an order to at the customer location
+         * Load a product at a warehouse
+         * Load a subsequent product at a warehouse (Bonus for multiple loads)
+         * Unload a product at a warehouse
+         * Unload a subsequent product at a warehouse (Bonus for multiple unloads)
+         * Unload a product at a warehouse that has zero inventory of said product (Bonus)       
 
 ### Training
 
@@ -118,7 +133,9 @@ Of note in the training dataset is that just over half of the orders can be fulf
       * Pink is a 6 hour PPO learning session with 55 orders/1 drone/10 warehouses
       * Gray is a 6 hour CPTO learning session with 55 orders/1 drone/10 warehouses
       <br>
-    ![](images/FullSimTRPO.PNG)     
+      
+  ![](images/FullSimTRPO.PNG)     
+    
       * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
       <br\>
   * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
