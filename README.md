@@ -356,7 +356,7 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
   * Drone_v.0xx.ipynb: Instantiates the environment, performs checks and doublechecks, then trains a model.
   * DroneProcess_v.005.ipynb: Utilizes the trained model to produce the submission.csv file.
   * DroneML_Notes_v002.ipynb: Notes taken during project (not needed to reproduce results)
-
+  * QA_testSubmissionFile.ipynb: Validate the submission file contains valid commands for this dataset
 
 ### Software Setup
     * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
