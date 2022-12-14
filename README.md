@@ -15,11 +15,10 @@ This can be read as simply: The total reward equals the sum of the reward for ea
 The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
 This scenario aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
   
-  * **Summary of the performance achieved:** Ex: Our best model was able to predict the next day stock price within 23%, 90% of the time. At the time of writing, the best performance on Kaggle of this metric is 18%.
+  * **Summary of the performance achieved:** The first submission to Kaggle that scored points was a 55 order/1 drone data set trained for 20 minutes. The score was 92 points.   
 
-## Summary of Workdone
+## Summary of Work Completed
 
-Include only the sections that are relevant and appropriate.
 
 ### Data
 
@@ -36,7 +35,8 @@ Include only the sections that are relevant and appropriate.
    * Size: Training set consists of 30 drones, 10 warehouses, 400 product types, 1250 orders for 9396 total 
 items.
 * Code submission: 
-   * This Kaggle challenge requires a code (notebook) submission which will process the test data set for subsequent scoring.
+   * This Kaggle challenge requires a code (notebook) submission which will process the test data set for subsequent scoring. This process must run completely without user intervention.
+   
 * Output:
    * Submission file requires a specific format for each action in a space-separated ASCII file, one action per line.
 
@@ -104,7 +104,7 @@ The maximum drone load for the training data is 200.
          * drone location: drone location after the most recent action
          * drone payload: drone payload weight after the most recent action
          * previous action: (Load/Unload/Deliver)
-         * most recent action: (Load/Unload/Deliver) This is probably unneccessary 
+         * most recent action: (Load/Unload/Deliver) This is probably unnecessary 
      * penalties(negative rewards) utilized:
          * Attempt to load/unload at a location other than a warehouse
          * Attempt to deliver a product for an order that has already been completed
@@ -123,7 +123,7 @@ The maximum drone load for the training data is 200.
 
 ### Training
 
-* Training sesison were typically several hours long even on a severely scaled back dataset of 55 orders.  
+* Training sessions were typically several hours long even on a severely scaled back dataset of 55 orders.  
     * Software environment
         * Windows 10
         * Anaconda Navigator 2.3.2 
@@ -166,7 +166,7 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
 
 ### Conclusions
 
-* The ability to closely tune the model action space to the problem is a key factor. For this challenge my utilization of the Stable Baselines 3 framework utilizing the multidiscrete action space was somewhat problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling saleman" optimization, limiting the domain of possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selections is challenging; it would be preferable to exclude the options from the action space altogether in advance - __reduce the dimensionality wherever practical__.
+* The ability to closely tune the model action space to the problem is a key factor. For this challenge my utilization of the Stable Baselines 3 framework utilizing the multidiscrete action space was somewhat problematic. Spending significant time investigating configuration capabilities of the available frameworks before commencing any coding is key to assuring the action space is confined to the smallest region possible. As with any "traveling salesman" optimization, limiting the domain of possible choices to exclude unreasonable options is key. Tuning the penalties for invalid selections is challenging; it would be preferable to exclude the options from the action space altogether in advance - __reduce the dimensionality wherever practical__.
 
 ### Future Work
 
@@ -182,7 +182,7 @@ The performance in frames-per-second to train on the full dataset (9300 orders/3
 * To reproduce these results on a local PC:
     * download the busy_day.in file from the Kaggle challenge site: https://www.kaggle.com/competitions/hashcode-drone-delivery/data
     * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
-    * From the Anaconda navigator primary window, open a command window and install all neccessary modules
+    * From the Anaconda navigator primary window, open a command window and install all necessary modules
         * pip install numpy
         * pip install pandas
         * pip install matplotlib
@@ -350,16 +350,16 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
 ### Overview of files in repository
 
 * Describe the directory structure, if any.
-* List all relavent files and describe their role in the package.
+* List all relevant files and describe their role in the package.
 * An example:
-  * droneenv.py: This reads the "busy_day.in" file supplied by kaggle and instantates the environment.
+  * droneenv.py: This reads the "busy_day.in" file supplied by Kaggle and instantiates the environment.
   * Drone_v.0xx.ipynb: Instantiates the environment, performs checks and doublechecks, then trains a model.
   * DroneProcess_v.005.ipynb: Utilizes the trained model to produce the submission.csv file.
   * DroneML_Notes_v002.ipynb: Notes taken during project (not needed to reproduce results)
 
 ### Software Setup
     * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
-    * From the Anaconda navigator primary window, open a command window and install all neccessary modules
+    * From the Anaconda navigator primary window, open a command window and install all necessary modules
         * pip install numpy
         * pip install pandas
         * pip install matplotlib
