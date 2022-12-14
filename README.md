@@ -145,7 +145,7 @@ The maximum drone load for the training data is 200.
       
   ![Full-size Simulation training curve](images/FullSimTRPO.PNG)     
     
-      * Blue is a 10 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation)
+      * Blue is an ongoing 20 hour TRPO learning session with 9300 orders/30 drones/10 warehouses (full simulation). I anticipate a drastic increase in the reward mean at some point as it is currently still a negative value and this same code base has trained into positive means with smaller datasets.
 
   * Training was terminated when the mean score per episode was positive and flatlined for a significant period or trended negatively. 
 
@@ -356,7 +356,6 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
   * Drone_v.0xx.ipynb: Instantiates the environment, performs checks and doublechecks, then trains a model.
   * DroneProcess_v.005.ipynb: Utilizes the trained model to produce the submission.csv file.
   * DroneML_Notes_v002.ipynb: Notes taken during project (not needed to reproduce results)
-  * QA_testSubmissionFile.ipynb: Validate the submission file contains valid commands for this dataset
 
 ### Software Setup
     * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
