@@ -2,7 +2,7 @@
 
 # Drone Delivery 
 
-* This repository holds an attempt to apply model-free Reinforcement Learning techniques to optimize product delivery times as detailed in the "Drone Delivery" Kaggle challenge (https://www.kaggle.com/competitions/hashcode-drone-delivery/overview). 
+* This repository holds an attempt to apply model-free Reinforcement Learning techniques to optimize product delivery times as detailed in the "Drone Delivery" Kaggle challenge (https://www.kaggle.com/competitions/hashcode-drone-delivery/overview). This project is superceded by https://github.com/GregWells/DroneDelivery_v2
 
 ## Overview
 
