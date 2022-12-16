@@ -2,7 +2,7 @@
 
 # Drone Delivery 
 
-* This repository holds an attempt to apply model-free Reinforcement Learning techniques to optimize product delivery times as detailed in the ["Drone Delivery" Kaggle challenge] (https://www.kaggle.com/competitions/hashcode-drone-delivery/overview). This project is superceded by [my current modification of this effort(Dec 2022)](https://github.com/GregWells/DroneDelivery_v2)
+* This repository holds an attempt to apply model-free Reinforcement Learning techniques to optimize product delivery times as detailed in the ["Drone Delivery" Kaggle challenge](https://www.kaggle.com/competitions/hashcode-drone-delivery/overview). This project is superceded by [my current modification of this effort(Dec 2022)](https://github.com/GregWells/DroneDelivery_v2)
 
 ## Overview
 
@@ -358,7 +358,7 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
   * DroneML_Notes_v002.ipynb: Notes taken during project (not needed to reproduce results)
 
 ### Software Setup
-    * Install Anaconda Navigator: https://docs.anaconda.com/navigator/install/
+    * Install [Anaconda Navigator:](https://docs.anaconda.com/navigator/install/)
     * From the Anaconda navigator primary window, open a command window and install all necessary modules
         * pip install numpy
         * pip install pandas
@@ -370,7 +370,7 @@ Refresh the tensorboard to watch training progress. Once the mean reward stabili
 
 
 ### Data
-    * download the busy_day.in file from the Kaggle challenge site: https://www.kaggle.com/competitions/hashcode-drone-delivery/data
+    * download the busy_day.in file from the [Kaggle challenge site](https://www.kaggle.com/competitions/hashcode-drone-delivery/data)
 
 ### Training
 
