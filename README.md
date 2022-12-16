@@ -13,7 +13,7 @@
   * **Scoring method:** The approach used for the large rewards utilizes an **infinite-horizon, discounted return** equation:<br >
   ![](images/infiniteHorizonDiscountedReturn2.PNG)
 
-This can be summarized: The total reward equals the sum of the reward for each time step multiplied by the discount factor.<br>
+    This can be summarized: The total reward equals the sum of the reward for each time step multiplied by the discount factor.<br>
 <br/>
 The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
 This scenario aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
