@@ -15,7 +15,7 @@
 
     This can be summarized: The total reward equals the sum of the reward for each time step multiplied by the discount factor.<br>
 <br/>
-The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
+    The &gamma;<sup>t</sup> factor in this equation is the discount factor. If &gamma;<sup>t</sup> is equal to zero, future rewards have no value, if &gamma;<sup>t</sup> is 1 then future rewards have no discount applied. Typical &gamma;<sup>t</sup> factors are .9-.99.
 This scenario aligns well with model-free deep RL algorithms.  I compared the performance of 2 different RL algorithms, Proximal Policy Optimization (PPO) and Trust Region Policy Optimization (TRPO).
   
   * **Summary of the performance achieved:** The code within the project does train an AI model to generally select viable options to facilitate a high scoring initial order delivery. However, it does not rapidly progress to an overall high-scoring total game score. The first submission to Kaggle that scored points was a 55 order/1 drone data set trained for 20 minutes. The score was 92 points.   
